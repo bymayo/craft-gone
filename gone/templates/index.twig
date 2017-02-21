@@ -1,0 +1,53 @@
+{% extends "gone/_layouts/cp" %}
+{% set title = 'Gone' %}
+
+{% block content %}
+
+	{% set elements = craft.gone.getAll() %}
+	
+	{% if elements|length %}
+	
+		<table id="navItems" class="data fullwidth collapsible">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Element ID</th>
+					<th>Title</th>
+					<th>URL</th>
+					<th>Type</th>
+					<th>Date Removed</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for element in elements %}
+					<tr>
+						<td>{{ element.id }}</td>
+						<td>{{ element.elementId }}</td>
+						<td>
+							<strong>
+								<a href="/{{ element.uri }}" target="_blank">
+									{{ element.title }}
+								</a>
+							</strong>
+						</td>
+						<td>
+							<code>{{ element.uri }}</code>
+						</td>
+						<td>{{ element.type }}</td>
+						<td>{{ element.dateCreated.localeDate() }}</td>
+						<td class="thin">
+							<a href="{{ actionUrl('gone/remove', { id: element.id }) }}" class="delete icon" title="{{ 'Delete'|t }}"></a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	
+	{% else %}
+	
+		No elements have have been removed yet.
+	
+	{% endif %}	
+	
+{% endblock %}
