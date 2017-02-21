@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/madebyshape/gone/master/screenshots/icon.png" width="50">
+<img src="https://github.com/madebyshape/gone/raw/master/screenshots/icon.png" width="50">
 
 # Gone
 
@@ -22,9 +22,9 @@ Showing a 410 error page also gives you more control over what you say to the us
 
 ## Useage
 
-The only thing you need to do is ensure you have a '410.twig' template in your 'craft/templates' folder. 
+The only thing you need to do is ensure you have a `410.twig` template in your `craft/templates` folder. 
 
-If you've changed the errorTemplatePrefix setting in your config file, ensure the 410.twig file is placed in this folder inside templates.
+If you've changed the errorTemplatePrefix setting in your config file, ensure the `410.twig` file is placed in this folder inside templates.
 
 ## Templating
 
@@ -53,7 +53,7 @@ E.g.
 
 ## Roadmap
 
-- Log Assets, Categories & Users Support
+- Log when Assets, Categories & Users are deleted
 - Support Multilingual builds
 - Support Craft Commerce
 
