@@ -4,9 +4,11 @@
 
 Gone is a Craft CMS plugin that returns a 410 error for elements (Entries, Categories etc) that have been deleted from the CMS instead of a 404 error.
 
-A 410 error means the page is "gone" and that it existed at some point. Comparing this to a 404 error which says the page never existed / can't be found. IN SEO terms, it's better to deliver this type of error when you can, over a 404. 
+A 410 error means the page is "gone" and that it existed at some point. Comparing this to a 404 error which says the page never existed / can't be found. In SEO terms, it's better to deliver this type of error when you can, over a 404. 
 
 Showing a 410 error page also gives you more control over what you say to the user if they hit that page. E.g. "The *Product* no longer exists, here are some recommendations...".
+
+Read more about 410 errors - https://www.bluecorona.com/blog/410-error
 
 
 ## Features
@@ -24,7 +26,7 @@ Showing a 410 error page also gives you more control over what you say to the us
 
 The only thing you need to do is ensure you have a `410.twig` template in your `craft/templates` folder. 
 
-If you've changed the errorTemplatePrefix setting in your config file, ensure the `410.twig` file is placed in this folder inside templates.
+If you've changed the `errorTemplatePrefix` setting (https://craftcms.com/docs/config-settings#errorTemplatePrefix) in your config file, ensure the `410.twig` file is placed in this folder inside templates.
 
 ## Templating
 
