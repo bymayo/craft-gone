@@ -58,6 +58,13 @@ class GonePlugin extends BasePlugin
         return true;
     }
     
+	public function registerCpRoutes()
+	{
+		return array(
+			'gone' => array('action' => 'gone/goneIndex'),
+		);
+	}
+    
     public function init()
     {
 	    
@@ -72,6 +79,7 @@ class GonePlugin extends BasePlugin
     	
     	}
 
+/*
 		craft()->on(
 			'entries.deleteEntry', 
 			function(Event $event) {
@@ -82,7 +90,39 @@ class GonePlugin extends BasePlugin
 				}
 			}
 		);
+*/
 		
+		craft()->on(
+			'elements.onBeforeDeleteElements', 
+			function(Event $event) {
+				
+				// Check to see if element is an entry, category etc
+				
+				GonePlugin::log('Deleted');
+				$element = craft()->gone->getElementById($event->params['elementIds'][0]);
+				craft()->gone->isDeleted($element);
+				
+			}
+		);
+		
+		craft()->on(
+			'elements.onSaveElement', 
+			function(Event $event) {
+				
+				// Check to see if element is an entry, category etc
+				
+				if ($event->params['isNewElement']) {
+					GonePlugin::log('Saved - New');
+					craft()->gone->isNew($event->params['element']);
+				}
+				else {
+					GonePlugin::log('Saved - Updated');
+					craft()->gone->isUpdated($event->params['element']);
+				}
+			}
+		);
+		
+/*
 		craft()->on(
 			'elements.onBeforePerformAction',
 			function(Event $event) {
@@ -97,13 +137,14 @@ class GonePlugin extends BasePlugin
 					foreach ($elements as $element) {
 						if ($element->elementType === 'Entry') {
 							// Temporarily check if element is an entry
-							craft()->gone->add($element);	
+							craft()->gone->add($element, 'delete');
 						}
 					}
 				}
 				
 			}
 		);
+*/
 			
 		// Categories
 		// Users

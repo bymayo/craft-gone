@@ -10,23 +10,27 @@
 
 namespace Craft;
 
-class GoneModel extends BaseModel
+class GoneModel extends BaseElementModel
 {
+	
+	protected $elementType = 'Gone';
+	
     /**
      * @return array
      */
     protected function defineAttributes()
     {
-        return array_merge(parent::defineAttributes(), array(
-	        'id' => array(AttributeType::Number),
-            'elementId' => array(AttributeType::Number),
-            'title' => array(AttributeType::String),
-            'slug' => array(AttributeType::String),
-            'uri' => array(AttributeType::String),
-            'type' => array(AttributeType::String),
-            'dateCreated' => array(AttributeType::DateTime),
-            'dateUpdated' => array(AttributeType::DateTime)
-        ));
+        return array_merge(
+        	parent::defineAttributes(), 
+        	array(
+	        	'elementId' => array(AttributeType::String),
+				'elementType' => array(AttributeType::String),
+				'elementTitle'=> array(AttributeType::String), 
+				'elementSlug' => array(AttributeType::String),
+				'elementUri' => array(AttributeType::String),
+				'redirectType' => array(AttributeType::String)
+			)
+		);
     }
 
 }

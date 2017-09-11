@@ -12,31 +12,89 @@ namespace Craft;
 
 class GoneService extends BaseApplicationComponent
 {
+	
+	public function isNew() {}
+	public function isUpdated() {}
+	public function isDelete() {}
+	
+	public function getElementById($id){
+		
+		// Lookup in elements table for the type based on the ID, then pass the type to the criteria below
+		
+		$criteria = craft()->elements->getCriteria();
+		$criteria->id = $id;
+		
+		$element = $criteria->find();
+		
+		return $element;
+		
+	}
+	
     /*
 	 * Add
      */
     public function add($element)
     {
 	    
-	    $siteUrl = craft()->config->get('siteUrl');
-
-		$record = new GoneRecord;
-		$record->setAttribute('elementId', $element->id);
-		$record->setAttribute('type', $element->elementType);
-		
 	    $attributes = [
-		    'title',
-		    'slug',
-		    'uri'
+		    'elementType',
+		    'elementTitle',
+		    'elementSlug',
+		    'elementUri',
+		    'redirectElementId',
+		    'redirectType'
 	    ];
-		
-	    foreach ($attributes as $attribute) {
-			$record->setAttribute($attribute, $element->$attribute);
+	    
+	    // Create Element
+	    $model = new GoneModel();
+	    
+	    // Set Element Values
+	    
+	    $model->elementType = $element->elementType;
+	    $model->elementTitle = $element->title;
+	    $model->elementSlug = $element->slug;
+	    $model->elementUri = $element->uri;
+	    
+	    $model->redirectElementId = 2;
+	    $model->redirectType = "302";
+	    
+	    // Set Element Title
+	    $model->getContent()->title = $element->title;
+	    
+	    if ($this->getById($element->id)) {
+			GonePlugin::log('Exists, Updating Redirect Element ID');
 	    }
-
-		$record->save();
+	    else {
+			// 
+	    }
+	    
+	    // Check to see if entry exists or not
+	    
+	    // Create New Record
+	    $record = new GoneRecord();
+	    
+	    // Set Element Values
+	    foreach ($attributes as $attribute) {
+		    $record->$attribute = $model->$attribute;
+	    }
+	    
+	    // Validate Record
+		$record->validate();
 		
-		return false;
+		if ($record) {
+			if (craft()->elements->saveElement($model)) {
+			    $record->id = $model->id;  
+				$record->save();
+				return true;
+			}
+		}
+	    
+	    return false;
+	    
+    }
+    
+    public function getBySlug($slug)
+    {
 	    
     }
     

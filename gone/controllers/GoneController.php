@@ -15,6 +15,11 @@ class GoneController extends BaseController
 	
 	protected $allowAnonymous = true;
 	
+	public function actionGoneIndex()
+	{
+		$this->renderTemplate('gone/_index');
+	}
+	
 	public function actionRemove()
 	{
 		

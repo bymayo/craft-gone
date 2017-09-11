@@ -27,11 +27,12 @@ class GoneRecord extends BaseRecord
    protected function defineAttributes()
     {
         return array(
-            'elementId' => array(AttributeType::Number),
-            'title' => array(AttributeType::String),
-            'slug' => array(AttributeType::String),
-            'uri' => array(AttributeType::String),
-            'type' => array(AttributeType::String)
+	    	'elementId' => array(AttributeType::String),
+			'elementType' => array(AttributeType::String),
+			'elementTitle'=> array(AttributeType::String), 
+			'elementSlug' => array(AttributeType::String),
+			'elementUri' => array(AttributeType::String),
+			'redirectType' => array(AttributeType::String)
         );
     }
 }
