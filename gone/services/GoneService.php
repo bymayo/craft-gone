@@ -13,35 +13,76 @@ namespace Craft;
 class GoneService extends BaseApplicationComponent
 {
 	
-	public function isNew() {}
-	public function isUpdated() {}
-	public function isDelete() {}
+	public function isNew($element)
+	{
+		$this->removeByUri($element->uri);
+	}
 	
-	public function getElementById($id){
+	public function isUpdated($element)
+	{
 		
-		// Lookup in elements table for the type based on the ID, then pass the type to the criteria below
+		$elementSession = unserialize($_SESSION['gone_element_' . $element->id]);
 		
-		$criteria = craft()->elements->getCriteria();
-		$criteria->id = $id;
-		
-		$element = $criteria->find();
-		
-		return $element;
+		if ($element->uri !== $elementSession->uri) {
+			$this->removeByUri($element->uri);			
+			$this->createRedirect($elementSession, 301);
+		}
 		
 	}
 	
-    /*
-	 * Add
-     */
-    public function add($element)
-    {
+	public function isDeleted($element){
+		
+		$this->createRedirect($element, 410);
+		$this->updateRedirectType($element, 410);
+
+	}
+	
+	public function isElementDeleted($element)
+	{
+		
+		$this->removeByUri($element->elementUri);
+	}
+	
+	public function removeByUri($uri)
+	{
 	    
-	    $attributes = [
+	    $record = GoneRecord::model()->findAllByAttributes(
+	    	array(
+	    		'elementUri' => $uri
+	    	)
+	    );
+	    
+	    if ($record)
+	    {
+		    foreach ($record as $recordElement) {
+			    craft()->elements->deleteElementById($recordElement->id);
+			    $recordElement->delete();		
+		    }
+	    }
+		
+	}
+	
+	public function updateRedirectType($element, $redirectType)
+	{
+		
+		$record = GoneRecord::model()->updateAll(
+			array(
+				'redirectType' => $redirectType
+			),
+			'elementId = '. $element->id
+		);
+		
+	}
+	
+	public function createRedirect($element, $redirectType)
+	{
+		
+		$attributes = [
+			'elementId',
 		    'elementType',
 		    'elementTitle',
 		    'elementSlug',
 		    'elementUri',
-		    'redirectElementId',
 		    'redirectType'
 	    ];
 	    
@@ -49,26 +90,17 @@ class GoneService extends BaseApplicationComponent
 	    $model = new GoneModel();
 	    
 	    // Set Element Values
-	    
+	    $model->elementId = $element->id;
 	    $model->elementType = $element->elementType;
 	    $model->elementTitle = $element->title;
 	    $model->elementSlug = $element->slug;
 	    $model->elementUri = $element->uri;
-	    
-	    $model->redirectElementId = 2;
-	    $model->redirectType = "302";
+	    $model->redirectType = $redirectType;
 	    
 	    // Set Element Title
 	    $model->getContent()->title = $element->title;
 	    
-	    if ($this->getById($element->id)) {
-			GonePlugin::log('Exists, Updating Redirect Element ID');
-	    }
-	    else {
-			// 
-	    }
-	    
-	    // Check to see if entry exists or not
+	    // Check to see if record already exists
 	    
 	    // Create New Record
 	    $record = new GoneRecord();
@@ -83,67 +115,30 @@ class GoneService extends BaseApplicationComponent
 		
 		if ($record) {
 			if (craft()->elements->saveElement($model)) {
+				// Create ID and relate to ID in element table
 			    $record->id = $model->id;  
 				$record->save();
 				return true;
+				
 			}
 		}
 	    
 	    return false;
-	    
-    }
-    
-    public function getBySlug($slug)
-    {
-	    
-    }
-    
-    /*
-	 * Remove
-     */
-    public function remove($id)
-    {
-	    
-	    $record = GoneRecord::model()->findByAttributes(
-	    	array(
-	    		'id' => $id
-	    	)
-	    );
-	    
-	    if ($record)
-	    {
-		    $record->delete();
-	    }
-	    
-	    return false;
-	    
-    }
-    
-    /*
-	 * Get All
-     */
-     public function getAll()
-     {
-	    
-        $records = GoneRecord::model()->findAll();
-        return GoneModel::populateModels($records);
-	     
-     }
-     
-    /*
-	 * Get By URI
-     */
-	 public function getByUri($uri)
-	 {
-
-	 	if ($uri === null) {
-	 		$uri = trim(craft()->request->getUrl(), '/');
+		
+	}
+	
+	public function check($uri = null)
+	{
+		
+	 	if (!$uri) {
+	 		$uri = trim(craft()->request->getPath(), '/');
 	 	}
 
 	    $model = new GoneModel;
+	    
 	    $record = GoneRecord::model()->findByAttributes(
 	    	array(
-	    		'uri' => $uri
+	    		'elementUri' => $uri
 	    	)
 	    );
 	    
@@ -152,49 +147,7 @@ class GoneService extends BaseApplicationComponent
 		    $model = GoneModel::populateModel($record);
 		    return $model;
 	    }
-		 
-	 }
-	
-    /*
-	 * Check Element
-     */
-     public function checkElement($uri)
-     {
-	     
-	     $criteria = craft()->elements->getCriteria(ElementType::Entry);
-	     $criteria->uri = $uri;
-	     $entries = $criteria->find();
-	     
-	     if ($entries) {
-		     return $entries;
-	     }
-	     else {
-		     return false;
-	     }
-	     
-     }
-	
-    /*
-	 * Check Segments
-     */
-     public function checkUri($uri)
-     {
-
-	    $element = craft()->gone->getByUri($uri);
-	    
-	    if (craft()->gone->checkElement($uri) && $element) {
-		    craft()->gone->remove($element->id);
-		    return false;   
-	    }
-	    else {
-		    if ($element)
-		    {
-			    return $element;
-		    }   
-	    }
-	    
-	    return false;
-	     
-     }
+		
+	}
 
 }

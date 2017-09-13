@@ -35,12 +35,12 @@ class GonePlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.0.2';
+        return '2.0.0';
     }
 
     public function getSchemaVersion()
     {
-        return '1.0.2';
+        return '2.0.0';
     }
 
     public function getDeveloper()
@@ -68,89 +68,157 @@ class GonePlugin extends BasePlugin
     public function init()
     {
 	    
+    	global $elementTypes;
+    	$elementTypes = array('Entry', 'Category', 'Product');
+	    
+	    // Redirect
+	    
 	    if(!craft()->isConsole() && craft()->request->isSiteRequest()) {
     
-	    	$uri = trim(craft()->request->getUrl(), '/');
-	    	$gone = craft()->gone->checkUri($uri);
+	    	$gone = craft()->gone->check();
 	    	
 	    	if ($gone) {
-		    	throw new HttpException('410');
+		    	if ($gone->redirectType === '410') {
+			    	throw new HttpException(410, 'The requested element has been removed or gone and is no longer available.');	
+		    	}
+		    	else {
+					$redirectElement = craft()->elements->getElementById($gone->elementId);
+			    	craft()->request->redirect($redirectElement->url, true, $gone->redirectType);
+		    	}
 	    	}
     	
     	}
+    	
+    	/*
+	    		NOTE: Would be better if one of the Craft events worked for ALL
+	    			  elements, instead of individually.
+	    	*/
+    	
+    	// Delete - Entry
 
-/*
 		craft()->on(
 			'entries.deleteEntry', 
 			function(Event $event) {
+				craft()->gone->isDeleted($event->params['entry']);
+			}
+		);
+		
+		craft()->on(
+			'entries.onSaveEntry', 
+			function(Event $event) {
+				
+				global $elementTypes;
 				$element = $event->params['entry'];
-				if ($element->elementType === 'Entry') {
-					// Temporarily check if element is an entry
-					craft()->gone->add($element);
+				
+				if (in_array($element->elementType, $elementTypes)) {
+					if ($event->params['isNewEntry']) {
+						craft()->gone->isNew($element);
+					}
+					else {
+						craft()->gone->isUpdated($element);
+					}
 				}
 			}
 		);
-*/
+		
+		// Delete - Category
 		
 		craft()->on(
-			'elements.onBeforeDeleteElements', 
+			'categories.deleteCategory', 
 			function(Event $event) {
-				
-				// Check to see if element is an entry, category etc
-				
-				GonePlugin::log('Deleted');
-				$element = craft()->gone->getElementById($event->params['elementIds'][0]);
-				craft()->gone->isDeleted($element);
-				
+				craft()->gone->isDeleted($event->params['category']);
 			}
 		);
 		
 		craft()->on(
-			'elements.onSaveElement', 
+			'categories.onSaveCategory', 
 			function(Event $event) {
 				
-				// Check to see if element is an entry, category etc
+				global $elementTypes;
+				$element = $event->params['category'];
 				
-				if ($event->params['isNewElement']) {
-					GonePlugin::log('Saved - New');
-					craft()->gone->isNew($event->params['element']);
-				}
-				else {
-					GonePlugin::log('Saved - Updated');
-					craft()->gone->isUpdated($event->params['element']);
+				if (in_array($element->elementType, $elementTypes)) {
+					if ($event->params['isNewCategory']) {
+						craft()->gone->isNew($element);
+					}
+					else {
+						craft()->gone->isUpdated($element);
+					}
 				}
 			}
 		);
 		
-/*
+		// Delete - Commerce
+		
+		craft()->on(
+			'commerce_products.onDeleteProduct', 
+			function(Event $event) {
+				craft()->gone->isDeleted($event->params['product']);
+			}
+		);
+		
+		craft()->on(
+			'commerce_products.onSaveProduct', 
+			function(Event $event) {
+				
+				global $elementTypes;
+				$element = $event->params['product'];
+				
+				if (in_array($element->elementType, $elementTypes)) {
+					if ($event->params['isNewProduct']) {
+						craft()->gone->isNew($element);
+					}
+					else {
+						craft()->gone->isUpdated($element);
+					}
+				}
+			}
+		);
+		
+		// Get previous element before saved
+		
+		craft()->on(
+			'elements.onPopulateElement', 
+			function(Event $event) {
+				
+				global $elementTypes;
+				$element = $event->params['element'];
+				
+				if (in_array($element->elementType, $elementTypes)) {
+					$_SESSION['gone_element_' . $element->id] = serialize($element);
+				}
+				
+				
+				
+			}
+		);
+		
+		// Delete Bulk - All
+		
 		craft()->on(
 			'elements.onBeforePerformAction',
 			function(Event $event) {
 				
-				// Get 'Action' type
+				global $elementTypes;
 				$action = $event->params['action']->classHandle;
-				
-				// Get Elements within the action
 				$elements = $event->params['criteria']->find();
 				
 				if ($action == 'Delete') {
 					foreach ($elements as $element) {
-						if ($element->elementType === 'Entry') {
-							// Temporarily check if element is an entry
-							craft()->gone->add($element, 'delete');
+						if (in_array($element->elementType, $elementTypes) && $element->title) {
+							// Check to see if element deleted is not a 'Gone' element
+							craft()->gone->isDeleted($element);
+						}
+						else {
+							craft()->gone->isElementDeleted($element);
 						}
 					}
 				}
 				
 			}
 		);
-*/
-			
-		// Categories
-		// Users
-		// Locales
-		// Assets
-		// Commerce
+		
+		parent::init();
 	    
     }
     
