@@ -56,7 +56,6 @@ If you've changed the `errorTemplatePrefix` setting (https://craftcms.com/docs/c
 
 - Support multilingual / locale based projects
 - Support section / category setting changes (E.g. if a section URL is changed from 'blog/entry' to 'news/entry')
-- 
 
 ## Credits
 
