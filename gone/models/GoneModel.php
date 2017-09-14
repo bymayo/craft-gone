@@ -24,7 +24,7 @@ class GoneModel extends BaseElementModel
         	parent::defineAttributes(), 
         	array(
 	        	'elementId' => array(AttributeType::String),
-				'elementType' => array(AttributeType::String),
+				'elementTypeOriginal' => array(AttributeType::String),
 				'elementTitle'=> array(AttributeType::String), 
 				'elementSlug' => array(AttributeType::String),
 				'elementUri' => array(AttributeType::String),

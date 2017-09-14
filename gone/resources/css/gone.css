@@ -1,0 +1,25 @@
+.gone-redirect-type {
+	padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    color: #FFF;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.25);
+}
+
+.gone-redirect-type-410 {
+	background-color: #0b8b98;
+}
+
+.gone-redirect-type-301 {
+	background-color: #fbb109;
+}
+
+.gone-redirect-type-302 {
+	background-color: #008fe2;
+}
+
+.gone-redirect-type-404 {
+	background-color: #da0606;
+}

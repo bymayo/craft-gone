@@ -13,6 +13,37 @@ namespace Craft;
 class GoneService extends BaseApplicationComponent
 {
 	
+	public function saveRedirect(GoneModel $redirect)
+	{
+		
+		$attributes = [
+			'elementId',
+		    'elementTypeOriginal',
+		    'elementTitle',
+		    'elementSlug',
+		    'elementUri',
+		    'redirectType'
+	    ];
+
+        if ($redirect->id) {
+            $record = GoneRecord::model()->findById($redirect->id);
+        }
+        
+	    foreach ($attributes as $attribute) {
+		    $record->$attribute = $redirect->$attribute;
+	    }
+
+        $record->validate();
+        
+        $redirect->addErrors($record->getErrors());
+        
+        if (!$redirect->hasErrors()) {
+            return $record->save();
+        }
+        return false;
+		
+	}
+	
 	public function isNew($element)
 	{
 		$this->removeByUri($element->uri);
@@ -79,7 +110,7 @@ class GoneService extends BaseApplicationComponent
 		
 		$attributes = [
 			'elementId',
-		    'elementType',
+		    'elementTypeOriginal',
 		    'elementTitle',
 		    'elementSlug',
 		    'elementUri',
@@ -91,7 +122,7 @@ class GoneService extends BaseApplicationComponent
 	    
 	    // Set Element Values
 	    $model->elementId = $element->id;
-	    $model->elementType = $element->elementType;
+	    $model->elementTypeOriginal = $element->elementTypeOriginal;
 	    $model->elementTitle = $element->title;
 	    $model->elementSlug = $element->slug;
 	    $model->elementUri = $element->uri;
@@ -99,8 +130,6 @@ class GoneService extends BaseApplicationComponent
 	    
 	    // Set Element Title
 	    $model->getContent()->title = $element->title;
-	    
-	    // Check to see if record already exists
 	    
 	    // Create New Record
 	    $record = new GoneRecord();
@@ -135,18 +164,29 @@ class GoneService extends BaseApplicationComponent
 	 	}
 
 	    $model = new GoneModel;
-	    
-	    $record = GoneRecord::model()->findByAttributes(
-	    	array(
-	    		'elementUri' => $uri
-	    	)
-	    );
+	    $record = GoneRecord::model()->findByAttributes(array('elementUri' => $uri));
 	    
 	    if ($record)
 	    {
 		    $model = GoneModel::populateModel($record);
 		    return $model;
 	    }
+		
+	}
+	
+	public function getById($id)
+	{
+		
+	    $model = new GoneModel;
+	    $record = GoneRecord::model()->findByAttributes(array('id' => $id));
+	    
+	    if ($record)
+	    {
+		    $model = GoneModel::populateModel($record);
+		    return $model;
+	    }
+		
+		return true;
 		
 	}
 

@@ -20,7 +20,7 @@ class GonePlugin extends BasePlugin
 
     public function getDescription()
     {
-        return Craft::t('Elements that have been deleted will return a 410 instead of a 404 error');
+        return Craft::t('Tracks updated & deleted elements by creating automatic 404, 410, 301 or 302 errors.');
     }
 
     public function getDocumentationUrl()
@@ -61,7 +61,8 @@ class GonePlugin extends BasePlugin
 	public function registerCpRoutes()
 	{
 		return array(
-			'gone' => array('action' => 'gone/goneIndex'),
+			'gone' => 'gone/index',
+			'gone/edit/(?P<id>\d+)' => 'gone/edit'
 		);
 	}
     
