@@ -4,7 +4,7 @@
 
 Gone is a Craft CMS plugin that keeps track of updated and removed elements (E.g. Entries) and then returns the correct error template to the user.
 
-For example, if an element has been updated (E.g. The slug changed) then it will create an automatic 302 redirect.
+For example, if an element slug has been manually changed, then it will automatically create a 302 redirect.
 
 ## Features
 
