@@ -6,6 +6,8 @@ Gone is a Craft CMS plugin that keeps track of updated and removed elements (E.g
 
 For example, if an element slug has been manually changed, then it will automatically create a 302 redirect.
 
+<img src="https://github.com/madebyshape/gone/raw/master/screenshots/screenshot.png" style="width: 100%">
+
 ## Features
 
 - Works with Entries, Categories and Craft Commerce Products
