@@ -2,19 +2,17 @@
 
 # Gone
 
-Gone is a Craft CMS plugin that returns a 410 error for elements (Entries, Categories etc) that have been deleted from the CMS instead of a 404 error.
+Gone is a Craft CMS plugin that keeps track of updated and removed elements (E.g. Entries) and then returns the correct error template to the user.
 
-A 410 error means the page is "gone" and that it existed at some point. Comparing this to a 404 error which says the page never existed / can't be found. In SEO terms, it's better to deliver this type of error when you can, over a 404. 
-
-Showing a 410 error page also gives you more control over what you say to the user if they hit that page. E.g. "The *Product* no longer exists, here are some recommendations...".
-
-Read more about 410 errors - https://www.bluecorona.com/blog/410-error
-
+For example, if an element has been updated (E.g. The slug changed) then it will create an automatic 302 redirect.
 
 ## Features
 
-- Keeps a log of all deleted elements
-- Output information on deleted elements to show related elements
+- Works with Entries, Categories and Craft Commerce Products
+- Tracks if an element slug has been updated
+- Tracks if an element has been deleted
+- Automatically removes rules if a new element is created with a matching slug
+- Output information on updated / deleted elements
 - Craft 2.5 compatible
 
 ## Install
@@ -22,20 +20,13 @@ Read more about 410 errors - https://www.bluecorona.com/blog/410-error
 - Add the `gone` directory into your `craft/plugins` directory.
 - Navigate to Settings -> Plugins and click the "Install" button.
 
-## Useage
-
-The only thing you need to do is ensure you have a `410.twig` template in your `craft/templates` folder. 
-
-If you've changed the `errorTemplatePrefix` setting (https://craftcms.com/docs/config-settings#errorTemplatePrefix) in your config file, ensure the `410.twig` file is placed in this folder inside templates.
-
 ## Templating
 
 The plugin does all the work itself in the background, but if you want to output details about the element that has been deleted you can do so with the following twig tag -
 
-	{{ craft.gone.getByUri() }}
+	{{ craft.gone.check() }}
 	
 This will return an array, which then allows you to use the following options -
-
 
 <table>
 	<tr><td>id</td></tr>
@@ -49,15 +40,23 @@ This will return an array, which then allows you to use the following options -
 
 E.g.
 
-	{% set element = craft.gone.getByUri() %}
+	{% set element = craft.gone.check() %}
 	
 	Sorry, but {{ element.title }} no longer exists.
+	
+## Custom Error Templates
+
+The above technique is useful if you want to use it on custom erorr templates. E.g. if you wanted to say "We're sorry but, *Product X* no longer exists. We've recommended some related products below".
+
+To do this, just create the correct template in your `craft/templates` folder. E.g. `410.twig` or `404.twig`.
+
+If you've changed the `errorTemplatePrefix` setting (https://craftcms.com/docs/config-settings#errorTemplatePrefix) in your config file, ensure the error template files are placed in this folder inside templates.
 
 ## Roadmap
 
-- Log when Assets, Categories & Users are deleted
-- Support Multilingual builds
-- Support Craft Commerce
+- Support multilingual / locale based projects
+- Support section / category setting changes (E.g. if a section URL is changed from 'blog/entry' to 'news/entry')
+- 
 
 ## Credits
 
