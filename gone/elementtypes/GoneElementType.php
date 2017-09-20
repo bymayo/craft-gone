@@ -34,17 +34,17 @@ class GoneElementType extends BaseElementType
 			),
 			'gone:2' => array(
 				'label' => Craft::t('301 - Permanent'),
-                'criteria' => array('redirectType' => 301),
+                'criteria' => array('redirect' => 301),
                 'defaultSort' => array('dateCreated', 'desc')
 			),
 			'gone:3' => array(
 				'label' => Craft::t('302 - Temporary'),
-                'criteria' => array('redirectType' => 302),
+                'criteria' => array('redirect' => 302),
                 'defaultSort' => array('dateCreated', 'desc')
 			),
 			'gone:4' => array(
 				'label' => Craft::t('410 - Removed'),
-                'criteria' => array('redirectType' => 410),
+                'criteria' => array('redirect' => 410),
                 'defaultSort' => array('dateCreated', 'desc')
 			),
 			'gone:5' => array(
@@ -52,17 +52,17 @@ class GoneElementType extends BaseElementType
 			),
 			'gone:6' => array(
 				'label' => Craft::t('Entry'),
-                'criteria' => array('elementTypeOriginal' => 'Entry'),
+                'criteria' => array('type' => 'Entry'),
                 'defaultSort' => array('dateCreated', 'desc')
 			),
 			'gone:7' => array(
 				'label' => Craft::t('Category'),
-                'criteria' => array('elementTypeOriginal' => 'Category'),
+                'criteria' => array('type' => 'Category'),
                 'defaultSort' => array('dateCreated', 'desc')
 			),
 			'gone:8' => array(
 				'label' => Craft::t('Product'),
-                'criteria' => array('elementTypeOriginal' => 'Product'),
+                'criteria' => array('type' => 'Product'),
                 'defaultSort' => array('dateCreated', 'desc')
 			)
 		);
@@ -91,10 +91,10 @@ class GoneElementType extends BaseElementType
 	{
 		return array(
 			'id' => Craft::t('ID'),
-			'elementUri' => Craft::t('URI'),
+			'uri' => Craft::t('URI'),
 			'elementId' => Craft::t('Redirect To'),
-			'redirectType' => Craft::t('Redirect Type'),
-			'elementTypeOriginal' => Craft::t('Type'),
+			'redirect' => Craft::t('Redirect'),
+			'type' => Craft::t('Type'),
 			'dateCreated' =>  Craft::t('Date Created')
 		);
 	}
@@ -103,9 +103,9 @@ class GoneElementType extends BaseElementType
 	{
 
         switch ($attribute) {
-	        case 'elementUri': 
+	        case 'uri': 
 	        
-	        	return '<a href="' . UrlHelper::getCpUrl('gone/edit/' . $element->id) . '">' . $element->elementUri . "</a>";
+	        	return '<a href="' . UrlHelper::getCpUrl('gone/edit/' . $element->id) . '">' . $element->uri . "</a>";
 	        	break;
 	        
             case 'elementId':
@@ -119,9 +119,9 @@ class GoneElementType extends BaseElementType
                 return $redirectElement;
                 break;
                 
-			case 'redirectType':
+			case 'redirect':
 			
-				return '<span class="gone-redirect-type gone-redirect-type-' . $element->redirectType . '">' . $element->redirectType . '</span>';
+				return '<span class="gone-redirect-type gone-redirect-type-' . $element->redirect . '">' . $element->redirect . '</span>';
 				break;
 
             default:
@@ -135,7 +135,7 @@ class GoneElementType extends BaseElementType
     {
         return array(
             'id'    => Craft::t('ID'),
-            'elementUri' => Craft::t('URI'),
+            'uri' => Craft::t('URI'),
             'dateCreated' => Craft::t('Date Created')
         );
     }
@@ -144,10 +144,10 @@ class GoneElementType extends BaseElementType
 	{
 		return array(
 			'order'      => array(AttributeType::String, 'default' => 'dateCreated desc'),
-			'elementUri' => AttributeType::Mixed,
-			'elementTypeOriginal' => AttributeType::Mixed,
-			'elementTitle' => AttributeType::Mixed,
-			'redirectType' => AttributeType::Mixed
+			'uri' => AttributeType::Mixed,
+			'type' => AttributeType::Mixed,
+			'title' => AttributeType::Mixed,
+			'redirect' => AttributeType::Mixed
 		);
 	}
 
@@ -155,17 +155,17 @@ class GoneElementType extends BaseElementType
 	{
 		
 		$query
-			->addSelect('gone.elementId, gone.elementTypeOriginal, gone.elementTitle, gone.elementSlug, gone.elementUri, gone.redirectType, gone.dateCreated')
+			->addSelect('gone.elementId, gone.type, gone.title, gone.slug, gone.uri, gone.redirect, gone.dateCreated')
 			->join('gone gone', 'gone.id = elements.id');
 			
-		if ($criteria->redirectType)
+		if ($criteria->redirect)
 		{
-			$query->andWhere(DbHelper::parseParam('gone.redirectType', $criteria->redirectType, $query->params));
+			$query->andWhere(DbHelper::parseParam('gone.redirect', $criteria->redirect, $query->params));
 		}
 		
-		if ($criteria->elementTypeOriginal)
+		if ($criteria->type)
 		{
-			$query->andWhere(DbHelper::parseParam('gone.elementTypeOriginal', $criteria->elementTypeOriginal, $query->params));
+			$query->andWhere(DbHelper::parseParam('gone.type', $criteria->type, $query->params));
 		}
 		
         if ($criteria->order) {

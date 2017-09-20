@@ -18,11 +18,11 @@ class GoneService extends BaseApplicationComponent
 		
 		$attributes = [
 			'elementId',
-		    'elementTypeOriginal',
-		    'elementTitle',
-		    'elementSlug',
-		    'elementUri',
-		    'redirectType'
+		    'type',
+		    'title',
+		    'slug',
+		    'uri',
+		    'redirect'
 	    ];
 
         if ($redirect->id) {
@@ -71,7 +71,7 @@ class GoneService extends BaseApplicationComponent
 	public function isElementDeleted($element)
 	{
 		
-		$this->removeByUri($element->elementUri);
+		$this->removeByUri($element->uri);
 	}
 	
 	public function removeByUri($uri)
@@ -79,7 +79,7 @@ class GoneService extends BaseApplicationComponent
 	    
 	    $record = GoneRecord::model()->findAllByAttributes(
 	    	array(
-	    		'elementUri' => $uri
+	    		'uri' => $uri
 	    	)
 	    );
 	    
@@ -98,7 +98,7 @@ class GoneService extends BaseApplicationComponent
 		
 		$record = GoneRecord::model()->updateAll(
 			array(
-				'redirectType' => $redirectType
+				'redirect' => $redirectType
 			),
 			'elementId = '. $element->id
 		);
@@ -110,11 +110,11 @@ class GoneService extends BaseApplicationComponent
 		
 		$attributes = [
 			'elementId',
-		    'elementTypeOriginal',
-		    'elementTitle',
-		    'elementSlug',
-		    'elementUri',
-		    'redirectType'
+		    'type',
+		    'title',
+		    'slug',
+		    'uri',
+		    'redirect'
 	    ];
 	    
 	    // Create Element
@@ -122,11 +122,11 @@ class GoneService extends BaseApplicationComponent
 	    
 	    // Set Element Values
 	    $model->elementId = $element->id;
-	    $model->elementTypeOriginal = $element->elementTypeOriginal;
-	    $model->elementTitle = $element->title;
-	    $model->elementSlug = $element->slug;
-	    $model->elementUri = $element->uri;
-	    $model->redirectType = $redirectType;
+	    $model->type = $element->elementType;
+	    $model->title = $element->title;
+	    $model->slug = $element->slug;
+	    $model->uri = $element->uri;
+	    $model->redirect = $redirectType;
 	    
 	    // Set Element Title
 	    $model->getContent()->title = $element->title;
@@ -164,7 +164,7 @@ class GoneService extends BaseApplicationComponent
 	 	}
 
 	    $model = new GoneModel;
-	    $record = GoneRecord::model()->findByAttributes(array('elementUri' => $uri));
+	    $record = GoneRecord::model()->findByAttributes(array('uri' => $uri));
 	    
 	    if ($record)
 	    {

@@ -31,9 +31,9 @@
 	
 	{{ forms.selectField({
 	    label: 'Type'|t,
-	    id: 'elementTypeOriginal',
-	    name: 'elementTypeOriginal',
-	    value: object is defined ? object.elementTypeOriginal : null,
+	    id: 'type',
+	    name: 'type',
+	    value: object is defined ? object.type : null,
 	    required: true,
 		options: [
 		    {
@@ -54,35 +54,35 @@
     
 	{{ forms.textField({
 		label: "Title"|t,
-		id: 'elementTitle',
-		name: 'elementTitle',
-		value: object is defined ? object.elementTitle : null,
+		id: 'title',
+		name: 'title',
+		value: object is defined ? object.title : null,
 		required: true
 	}) }}
 	
 	{{ forms.textField({
 		label: "Slug"|t,
-		id: 'elementSlug',
-		name: 'elementSlug',
-		value: object is defined ? object.elementSlug : null,
+		id: 'slug',
+		name: 'slug',
+		value: object is defined ? object.slug : null,
 		required: true,
 		readonly: true
 	}) }}
 	
 	{{ forms.textField({
 		label: "URI"|t,
-		id: 'elementUri',
-		name: 'elementUri',
-		value: object is defined ? object.elementUri : null,
+		id: 'uri',
+		name: 'uri',
+		value: object is defined ? object.uri : null,
 		required: true,
 		readonly: true
 	}) }}
 	
 	{{ forms.selectField({
 	    label: 'Redirect Type'|t,
-	    id: 'redirectType',
-	    name: 'redirectType',
-	    value: object is defined ? object.redirectType : null,
+	    id: 'redirect',
+	    name: 'redirect',
+	    value: object is defined ? object.redirect : null,
 	    required: true,
 		options: [
 		    {

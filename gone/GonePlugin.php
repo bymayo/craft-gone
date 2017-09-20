@@ -79,12 +79,12 @@ class GonePlugin extends BasePlugin
 	    	$gone = craft()->gone->check();
 	    	
 	    	if ($gone) {
-		    	if ($gone->redirectType === '410') {
+		    	if ($gone->redirect === '410') {
 			    	throw new HttpException(410, 'The requested element has been removed or gone and is no longer available.');	
 		    	}
 		    	else {
 					$redirectElement = craft()->elements->getElementById($gone->elementId);
-			    	craft()->request->redirect($redirectElement->url, true, $gone->redirectType);
+			    	craft()->request->redirect($redirectElement->url, true, $gone->redirect);
 		    	}
 	    	}
     	

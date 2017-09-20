@@ -23,12 +23,12 @@ class GoneModel extends BaseElementModel
         return array_merge(
         	parent::defineAttributes(), 
         	array(
-	        	'elementId' => array(AttributeType::String),
-				'elementTypeOriginal' => array(AttributeType::String),
-				'elementTitle'=> array(AttributeType::String), 
-				'elementSlug' => array(AttributeType::String),
-				'elementUri' => array(AttributeType::String),
-				'redirectType' => array(AttributeType::String)
+		    	'elementId' => array(AttributeType::String),
+				'type' => array(AttributeType::String),
+				'title'=> array(AttributeType::String), 
+				'slug' => array(AttributeType::String),
+				'uri' => array(AttributeType::String),
+				'redirect' => array(AttributeType::String)
 			)
 		);
     }

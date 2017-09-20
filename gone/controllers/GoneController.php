@@ -26,15 +26,15 @@ class GoneController extends BaseController
         
         $redirect->setAttributes(
         	array(
-            	'elementTypeOriginal' => $postAttributes['elementTypeOriginal'],
-				'elementTitle' => $postAttributes['elementTitle'],
-				'elementSlug' => $postAttributes['elementSlug'],
-				'elementUri' => $postAttributes['elementUri'],
-				'redirectType' => $postAttributes['redirectType']
+            	'type' => $postAttributes['type'],
+				'title' => $postAttributes['title'],
+				'slug' => $postAttributes['slug'],
+				'uri' => $postAttributes['uri'],
+				'redirect' => $postAttributes['redirect']
 			)
 		);
 		
-		$redirect->getContent()->title =  $postAttributes['elementTitle'];
+		$redirect->getContent()->title =  $postAttributes['title'];
 
         if (craft()->gone->saveRedirect($redirect)) {
             craft()->userSession->setNotice(Craft::t('Redirect saved.'));
