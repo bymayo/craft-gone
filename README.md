@@ -33,22 +33,24 @@ This will return an array, which then allows you to use the following options -
 <table>
 	<tr><td>id</td></tr>
 	<tr><td>elementId</td></tr>
+	<tr><td>type</td></tr>
 	<tr><td>title</td></tr>
 	<tr><td>slug</td></tr>
 	<tr><td>uri</td></tr>
-	<tr><td>type</td></tr>
+	<tr><td>redirect</td></tr>
 	<tr><td>dateCreated</td></tr>
+	<tr><td>dateUpdated</td></tr>
 </table>
 
 E.g.
 
-	{% set element = craft.gone.check() %}
+	{% set gone = craft.gone.check() %}
 	
-	Sorry, but {{ element.title }} no longer exists.
+	Sorry, but {{ gone.title }} no longer exists.
 	
 ## Custom Error Templates
 
-The above technique is useful if you want to use it on custom erorr templates. E.g. if you wanted to say "We're sorry but, *Product X* no longer exists. We've recommended some related products below".
+The above technique is useful if you want to use it on custom error templates. E.g. if you wanted to say "We're sorry but, *Product X* no longer exists. We've recommended some related products below".
 
 To do this, just create the correct template in your `craft/templates` folder. E.g. `410.twig` or `404.twig`.
 
