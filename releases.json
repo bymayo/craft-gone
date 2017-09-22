@@ -1,5 +1,13 @@
 [
 	{
+        "version": "2.0.1",
+        "downloadUrl": "https://github.com/madebyshape/gone/archive/master.zip",
+        "date": "2017-09-22T10:00:00-08:00",
+        "notes": [
+            "[Fixed] Wrong element type for products"
+        ]
+    },
+	{
         "version": "2.0.0",
         "downloadUrl": "https://github.com/madebyshape/gone/archive/master.zip",
         "date": "2017-09-13T10:00:00-08:00",

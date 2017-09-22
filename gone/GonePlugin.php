@@ -35,12 +35,12 @@ class GonePlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '2.0.0';
+        return '2.0.1';
     }
 
     public function getSchemaVersion()
     {
-        return '2.0.0';
+        return '2.0.1';
     }
 
     public function getDeveloper()
@@ -70,7 +70,7 @@ class GonePlugin extends BasePlugin
     {
 	    
     	global $elementTypes;
-    	$elementTypes = array('Entry', 'Category', 'Product');
+    	$elementTypes = array('Entry', 'Category', 'Commerce_Product');
 	    
 	    // Redirect
 	    
