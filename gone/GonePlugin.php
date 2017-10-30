@@ -35,12 +35,12 @@ class GonePlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '2.0.1';
+        return '2.0.2';
     }
 
     public function getSchemaVersion()
     {
-        return '2.0.1';
+        return '2.0.2';
     }
 
     public function getDeveloper()
@@ -179,17 +179,16 @@ class GonePlugin extends BasePlugin
 		// Get previous element before saved
 		
 		craft()->on(
-			'elements.onPopulateElement', 
+			'elements.onBeforeSaveElement', 
 			function(Event $event) {
 				
 				global $elementTypes;
 				$element = $event->params['element'];
 				
 				if (in_array($element->elementType, $elementTypes)) {
+					// Create session to store previous element (Before save) 
 					$_SESSION['gone_element_' . $element->id] = serialize($element);
 				}
-				
-				
 				
 			}
 		);

@@ -1,5 +1,13 @@
 [
 	{
+        "version": "2.0.2",
+        "downloadUrl": "https://github.com/madebyshape/gone/archive/master.zip",
+        "date": "2017-10-29T10:00:00-08:00",
+        "notes": [
+            "[Fixed] Fix for sessions for updated entries causing performance issues in the CMS"
+        ]
+    },
+	{
         "version": "2.0.1",
         "downloadUrl": "https://github.com/madebyshape/gone/archive/master.zip",
         "date": "2017-09-22T10:00:00-08:00",

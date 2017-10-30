@@ -52,12 +52,16 @@ class GoneService extends BaseApplicationComponent
 	public function isUpdated($element)
 	{
 		
-		$elementSession = unserialize($_SESSION['gone_element_' . $element->id]);
+		$session = $_SESSION['gone_element_' . $element->id];
+		$elementSession = unserialize($session);
 		
 		if ($element->uri !== $elementSession->uri) {
 			$this->removeByUri($element->uri);			
 			$this->createRedirect($elementSession, 301);
 		}
+		
+		// Remove session to ensure no performance issues
+		unset($session);
 		
 	}
 	
