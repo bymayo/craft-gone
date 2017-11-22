@@ -25,12 +25,12 @@ class GonePlugin extends BasePlugin
 
     public function getDocumentationUrl()
     {
-        return 'https://github.com/madebyshape/gone/blob/master/README.md';
+        return 'https://github.com/bymayo/gone/blob/master/README.md';
     }
 
     public function getReleaseFeedUrl()
     {
-        return 'https://raw.githubusercontent.com/madebyshape/gone/master/releases.json';
+        return 'https://raw.githubusercontent.com/bymayo/gone/master/releases.json';
     }
 
     public function getVersion()

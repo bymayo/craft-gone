@@ -1,4 +1,4 @@
-<img src="https://github.com/madebyshape/gone/raw/master/screenshots/icon.png" width="50">
+<img src="https://github.com/bymayo/gone/raw/master/screenshots/icon.png" width="50">
 
 # Gone
 
@@ -6,7 +6,7 @@ Gone is a Craft CMS plugin that keeps track of updated and removed elements (E.g
 
 For example, if an element slug has been manually changed, then it will automatically create a 302 redirect.
 
-<img src="https://github.com/madebyshape/gone/raw/master/screenshots/screenshot.png" style="width: 100%">
+<img src="https://github.com/bymayo/gone/raw/master/screenshots/screenshot.png" style="width: 100%">
 
 ## Features
 
