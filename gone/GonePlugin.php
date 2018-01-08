@@ -45,7 +45,7 @@ class GonePlugin extends BasePlugin
 
     public function getDeveloper()
     {
-        return 'Jason Mayo';
+        return 'ByMayo';
     }
 
     public function getDeveloperUrl()
