@@ -1,3 +1,5 @@
+> ⚠️ This repo is not under active development and will not be moved to Craft 3.x. ⚠️
+
 <img src="https://github.com/bymayo/gone/raw/master/screenshots/icon.png" width="50">
 
 # Gone
